@@ -29,9 +29,25 @@ contactForm.addEventListener('submit', async (event) => {
     
     // Validate form data
     if (!name || !email || !message) {
-        alert("Please fill in all fields.");
+        Swal.fire({
+            title: 'Error!',
+            text: 'Please fill in all fields.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
         return;
     }
+
+     // Show loading state
+     Swal.fire({
+        title: 'Sending...',
+        text: 'Please wait while we send your message.',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        willOpen: () => {
+            Swal.showLoading();
+        }
+    });
     
     // Save form data to Firestore
     try {
@@ -44,10 +60,21 @@ contactForm.addEventListener('submit', async (event) => {
         
         // Clear form after successful submission
         contactForm.reset();
-        alert("Message sent successfully!");
+        Swal.fire({
+            title: 'Success!',
+            text: 'Your message has been sent successfully!',
+            icon: 'success',
+            confirmButtonText: 'Great!'
+        });
     } catch (error) {
         console.error("Error saving message:", error);
-        alert("There was an error sending your message. Please try again.");
+        
+        // Show error message
+        Swal.fire({
+            title: 'Error!',
+            text: 'There was an error sending your message. Please try again.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
     }
 });
-// </script>
